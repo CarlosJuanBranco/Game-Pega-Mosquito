@@ -1,7 +1,26 @@
+// definir variáveis iniciais
 var altura = 0;
 var largura = 0;
 var vidas = 1;
+var tempo = 15;
 
+var criaMosquitoTempo = 1500;
+
+// definir o nível de dificuldade do jogo
+var nivel = window.location.search;
+nivel = nivel.replace("?", "");
+
+if(nivel === "normal") {
+    criaMosquitoTempo = 1500;
+
+} else if(nivel === "dificil") {
+    criaMosquitoTempo = 1000;
+
+} else if(nivel === "lendario") {
+    criaMosquitoTempo = 750;
+}
+
+// ajusta o tamanho do palco de jogo
 function ajustaTamanhoPalcoJogo() {
     altura = window.innerHeight;
     largura = window.innerWidth;
@@ -11,10 +30,24 @@ function ajustaTamanhoPalcoJogo() {
 
 ajustaTamanhoPalcoJogo();
 
-    // criar o elemento html
+// ajusta o cronometro e redireciona o jogador quando vencer o jogo
+var cronometro = setInterval(function() {
+
+    tempo -= 1;
+
+    if(tempo < 0) {
+        clearInterval(cronometro);
+        clearInterval(criaMosquito);
+        window.location.href = "vitoria.html";
+    } else {
+        document.getElementById("cronometro").innerHTML = tempo;
+    }  
+}, 1000)
+
+// criar o elemento html, o mosquito
 function posicaoRandomica() {
 
-    // remover o mosquito anterior (caso exista)
+// remover o mosquito anterior (caso exista) e redireciona o jogador quando perder o jogo
     if (document.getElementById("mosquito")) {
     document.getElementById("mosquito").remove();
 
@@ -30,7 +63,8 @@ function posicaoRandomica() {
         }
 
 }
-    // alterando a posição do mosquito na tela
+
+// alterando a posição do mosquito na tela
     var posicaoX = Math.floor(Math.random() * largura) - 90;
     var posicaoY = Math.floor(Math.random() * altura) - 90;
 
@@ -53,6 +87,7 @@ function posicaoRandomica() {
     document.body.appendChild(mosquito);
 }
 
+// definir tamanhos aleatórios para o mosquito
 function tamanhoAleatorio() {
     var classe = Math.floor(Math.random() * 3);
     
@@ -66,6 +101,7 @@ function tamanhoAleatorio() {
     }
 }
 
+// definir lados aleatórios para o mosquito
 function ladoAleatorio() {
     var classe = Math.floor(Math.random() * 2);
 
